@@ -32,10 +32,7 @@
       "dependencies": {
         "Microsoft.AspNetCore.Authentication.JwtBearer": {
           "target": "Package",
-          "version": "[5.0.1, )",
-          "noWarn": [
-            "NU1605"
-          ]
+          "version": "[5.0.1, )"
         },
         "Microsoft.AspNetCore.Authentication.OpenIdConnect": {
           "target": "Package",
@@ -57,6 +54,10 @@
         "Swashbuckle.AspNetCore": {
           "target": "Package",
           "version": "[5.6.3, )"
+        },
+        "System.IdentityModel.Tokens.Jwt": {
+          "target": "Package",
+          "version": "[6.8.0, )"
         },
         "sqlite": {
           "target": "Package",

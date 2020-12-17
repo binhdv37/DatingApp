@@ -21,14 +21,15 @@
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net50"
+          "net5.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "netcoreapp5.0": {
+          "net5.0": {
+            "targetAlias": "net5.0",
             "projectReferences": {}
           }
         },
@@ -39,14 +40,12 @@
         }
       },
       "frameworks": {
-        "netcoreapp5.0": {
+        "net5.0": {
+          "targetAlias": "net5.0",
           "dependencies": {
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
-              "version": "[5.0.1, )",
-              "noWarn": [
-                "NU1605"
-              ]
+              "version": "[5.0.1, )"
             },
             "Microsoft.AspNetCore.Authentication.OpenIdConnect": {
               "target": "Package",
@@ -68,6 +67,10 @@
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[5.6.3, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[6.8.0, )"
             },
             "sqlite": {
               "target": "Package",
