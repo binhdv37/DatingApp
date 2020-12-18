@@ -11,6 +11,7 @@ namespace API.Extensions
         public static IServiceCollection AddIdentityServices(this IServiceCollection services, IConfiguration config)
         {
             //cau hinh authentication : validate user truoc khi truy cap tai nguyen
+            //khi http request controller co [Authorize] ben tren => can dc authorize => logic ben duoi dc ap dung.
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {

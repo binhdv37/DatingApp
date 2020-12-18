@@ -3,8 +3,6 @@ import { CommonModule } from '@angular/common';
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {ToastrModule} from 'ngx-toastr';
 
-
-
 @NgModule({
   declarations: [],
   imports: [
@@ -15,7 +13,7 @@ import {ToastrModule} from 'ngx-toastr';
       }
     )
   ],
-  exports: [              // export module
+  exports: [              // export module => bên ngoài có thể access các module này
     BsDropdownModule,
     ToastrModule
   ]

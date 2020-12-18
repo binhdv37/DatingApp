@@ -22,7 +22,7 @@ namespace API.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
         {
-            return await _context.Users.ToListAsync();
+            return  await _context.Users.ToListAsync();
         }
 
         //api/users/3
