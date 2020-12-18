@@ -27,8 +27,8 @@ namespace API.Controllers
 
         //api/users/3
         [HttpGet("{id}")]
-        [Authorize]
-        public async Task<ActionResult<AppUser>> GetUser(int id)
+        [Authorize] //authorize
+        public async Task<ActionResult<AppUser>> GetUser(int id) //k cần map, .net tự map cái giá trị id này
         {
             return await _context.Users.FindAsync(id); // wait for context found user, then return
         }

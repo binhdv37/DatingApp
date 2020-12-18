@@ -25,7 +25,7 @@ namespace API
     public class Startup
     {
         private readonly IConfiguration _config;
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration)//Iconfiguration dc tu dong inject vao class nay
         {
             _config = configuration;
         }
@@ -58,7 +58,7 @@ namespace API
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
             }
 
-            app.UseHttpsRedirection();
+            app.UseHttpsRedirection(); //neu su dung http => tu dong redirect toi https
 
             app.UseRouting();
 

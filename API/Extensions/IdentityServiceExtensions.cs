@@ -16,6 +16,7 @@ namespace API.Extensions
                 {
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
+                        //khai bao key, khi user send token len, decode token, dung key kiem tra xem token co chinh xac k
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"])),
                         ValidateIssuer = false,
