@@ -27,6 +27,15 @@ namespace API.Middleware
 
         public async Task InvokeAsync(HttpContext context) // dat ten ham dung, ten khac la loi
         {
+            // try
+            // {
+            //
+            // }
+            // catch (Exception e)
+            // {
+            //     Console.WriteLine(e);
+            //     throw;
+            // }
             try
             {
                 await _next(context);

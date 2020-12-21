@@ -2,35 +2,40 @@
 using System.Linq;
 using System.Threading.Tasks;
 using API.Data;
+using API.DTOs;
 using API.Entities;
+using API.Interfaces;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
+    [Authorize]
     public class UsersController : BaseApiController
     {
-        private readonly DataContext _context;
+        private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
 
-        public UsersController(DataContext context)
+        public UsersController(IUserRepository userRepository, IMapper mapper)
         {
-            _context = context;
+            _userRepository = userRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        [AllowAnonymous]
-        public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
         {
-            return  await _context.Users.ToListAsync();
+            var users = await _userRepository.GetMembersAsync();
+            return Ok(users);
         }
 
         //api/users/3
-        [HttpGet("{id}")]
-        [Authorize] //authorize
-        public async Task<ActionResult<AppUser>> GetUser(int id) //k cần map, .net tự map cái giá trị id này
+        [HttpGet("{username}")]
+        public async Task<ActionResult<MemberDto>> GetUser(string username) //k cần map, .net tự map cái giá trị id này
         {
-            return await _context.Users.FindAsync(id); // wait for context found user, then return
+            return await _userRepository.GetMemberAsync(username);
         }
 
     }

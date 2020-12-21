@@ -66,3 +66,6 @@ D:\Learn dotnet\DatingApp\API\bin\Debug\net5.0\runtimes\win7-x64\native\sqlite3.
 D:\Learn dotnet\DatingApp\API\bin\Debug\net5.0\runtimes\win7-x86\native\sqlite3.dll
 D:\Learn dotnet\DatingApp\API\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 D:\Learn dotnet\DatingApp\API\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.OpenIdConnect.dll
+D:\Learn dotnet\DatingApp\API\bin\Debug\net5.0\Data\UserSeedData.json
+D:\Learn dotnet\DatingApp\API\bin\Debug\net5.0\AutoMapper.dll
+D:\Learn dotnet\DatingApp\API\bin\Debug\net5.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
