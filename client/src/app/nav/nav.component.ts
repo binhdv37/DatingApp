@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {AcountService} from '../_services/acount.service';
 import {Observable} from 'rxjs';
-import {User} from '../model/User';
+import {User} from '../_models/user';
 import {Router} from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
 

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {User} from './model/User';
+import {User} from './_models/user';
 import {AcountService} from './_services/acount.service';
 
 @Component({
@@ -23,6 +23,7 @@ export class AppComponent implements OnInit{
   // tslint:disable-next-line:typedef
   setCurrentUser(){
     const user: User = JSON.parse(localStorage.getItem('user'));
+    this.accountService.setCurrentUser(user);
   }
 
 }

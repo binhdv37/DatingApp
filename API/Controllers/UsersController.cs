@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Data;
@@ -27,6 +28,10 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
         {
+            // var users = await _userRepository.GetUsersAsync();
+            // var usersToReturn = _mapper.Map<IEnumerable<MemberDto>>(users); : map users to IEnumerable<MemberDto>
+            // return Ok(users);
+
             var users = await _userRepository.GetMembersAsync();
             return Ok(users);
         }

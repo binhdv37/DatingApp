@@ -53,7 +53,7 @@ namespace API.Data
         public async Task<IEnumerable<MemberDto>> GetMembersAsync()
         {
             return await _context.Users
-                .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
+                .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)//map userDto thanh memberdto, load config tu file autoMapperProfile
                 .ToListAsync();
         }
 
