@@ -23,7 +23,8 @@ namespace API.Data
 
         public void Update(AppUser user)
         {
-            _context.Entry(user).State = EntityState.Modified;
+            _context.Entry(user).State = EntityState.Modified; // hình như là báo cái user đã bị thay đổi
+            // muốn update, gọi hàm này, sau đó gọi hàm SaveAllChange bên dưới để update vào db
         }
 
         public async Task<bool> SaveAllAsync()

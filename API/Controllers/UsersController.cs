@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using API.Data;
 using API.DTOs;
@@ -41,6 +42,23 @@ namespace API.Controllers
         public async Task<ActionResult<MemberDto>> GetUser(string username) //k cần map, .net tự map cái giá trị id này
         {
             return await _userRepository.GetMemberAsync(username);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
+        {
+            //lay truong NamId tu trong token ra ( name id có giá trị là  username, trong phần tạo token đã setting như vậy)
+            var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var user = await _userRepository.GetUserByUsernameAsync(username);
+
+            _mapper.Map(memberUpdateDto, user);
+
+            _userRepository.Update(user);
+
+            if (await _userRepository.SaveAllAsync()) return NoContent(); //update thanh cong
+
+            return BadRequest("Failed to update user");
         }
 
     }
