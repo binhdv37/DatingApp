@@ -13,7 +13,7 @@ import {NgForm} from '@angular/forms';
   styleUrls: ['./member-edit.component.css']
 })
 export class MemberEditComponent implements OnInit {
-  @ViewChild('editForm') myEditForm: NgForm;
+  @ViewChild('editForm') myEditForm: NgForm; // lay form object ben html
   member: Member;
   user: User;
 
