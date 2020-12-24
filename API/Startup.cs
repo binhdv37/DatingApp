@@ -68,7 +68,7 @@ namespace API
 
             app.UseCors( x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200"));
 
-            // them authentication
+            // them authentication ( authen bang token )
             app.UseAuthentication();
             app.UseAuthorization();
 

@@ -12,6 +12,8 @@ namespace API.Extensions
         {
             //cau hinh authentication : validate user truoc khi truy cap tai nguyen
             //khi http request controller co [Authorize] ben tren => can dc authorize => logic ben duoi dc ap dung.
+            //logic ben duoi chi de kiem tra xem token co hop le hay khong thoi.
+            // token k hop le => tu dong returnn 401 unauthorize
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {

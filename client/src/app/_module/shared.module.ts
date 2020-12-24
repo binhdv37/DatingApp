@@ -5,6 +5,8 @@ import {ToastrModule} from 'ngx-toastr';
 import {TabsModule} from 'ngx-bootstrap/tabs';
 import {NgxGalleryModule} from '@kolkov/ngx-gallery';
 import {FileUploadModule} from 'ng2-file-upload';
+import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [],
@@ -15,16 +17,20 @@ import {FileUploadModule} from 'ng2-file-upload';
         positionClass: 'toast-bottom-right'
       }
     ),
-    TabsModule.forRoot(),
+    BrowserAnimationsModule,
+    TabsModule.forRoot(), // forRoot() dung cho nhung module thuoc ngx-module ??
     NgxGalleryModule,
-    FileUploadModule
+    FileUploadModule,
+    BsDatepickerModule.forRoot()
   ],
   exports: [              // export module => bên ngoài có thể access các module này
     BsDropdownModule,
     ToastrModule,
+    BrowserAnimationsModule,
     TabsModule,
     NgxGalleryModule,
-    FileUploadModule
+    FileUploadModule,
+    BsDatepickerModule
   ]
 })
 export class SharedModule { }

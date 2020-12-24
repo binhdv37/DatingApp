@@ -30,7 +30,7 @@ namespace API.Controllers
             _photoService = photoService;
         }
 
-        [HttpGet]
+        [HttpGet] // get all members
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
         {
             // var users = await _userRepository.GetUsersAsync();
@@ -42,13 +42,13 @@ namespace API.Controllers
         }
 
         //api/users/{username}
-        [HttpGet("{username}", Name = "GetUser")]
+        [HttpGet("{username}", Name = "GetUser")] //get member with username
         public async Task<ActionResult<MemberDto>> GetUser(string username) //k cần map, .net tự map cái giá trị id này
         {
             return await _userRepository.GetMemberAsync(username);
         }
 
-        [HttpPut]
+        [HttpPut] // update user
         public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
         {
             var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());

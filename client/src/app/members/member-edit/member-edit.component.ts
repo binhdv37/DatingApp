@@ -17,7 +17,9 @@ export class MemberEditComponent implements OnInit {
   member: Member;
   user: User;
 
-  @HostListener('window:beforeunload', ['$event']) unloadNotification($event: any){ // khi form dirty => tao su kien => beforeunload event
+  // su dụng hostListener khi muốn áp dụng việc j đó khi user close browser, thoát khỏi our app...
+  // tslint:disable-next-line:typedef
+  @HostListener('window:beforeunload', ['$event']) unloadNotification($event: any){// trước khi out window, kiểm tra xem form có dirty k
     if (this.myEditForm.dirty){
       $event.returnValue = true;
     }

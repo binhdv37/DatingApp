@@ -16,7 +16,7 @@ export class MembersService {
   constructor(private http: HttpClient) { }
 
   getMembers() {
-    if (this.members.length > 0) { return of(this.members); } // return observable
+    if (this.members.length > 0) { return of(this.members); } // return members property as observable
     return this.http.get<Member[]>(this.baseUrl + 'users').pipe(
       map (members => {
         this.members = members;
@@ -29,10 +29,10 @@ export class MembersService {
     const member = this.members.find(
       x => {
         // tslint:disable-next-line:no-unused-expression
-        console.log(username + ' ; '  +  x.userName);
-        x.userName === username;
+        return x.userName === username;
       }
     );
+    console.log('member : ' + member); // why this member always is undefined
     if (member !== undefined) { return of(member); }
     return this.http.get<Member>(this.baseUrl + 'users/' + username);
   }
