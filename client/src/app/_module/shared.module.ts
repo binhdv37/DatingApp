@@ -7,6 +7,9 @@ import {NgxGalleryModule} from '@kolkov/ngx-gallery';
 import {FileUploadModule} from 'ng2-file-upload';
 import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {PaginationModule} from 'ngx-bootstrap/pagination';
+import {ButtonsModule} from 'ngx-bootstrap/buttons';
+import {TimeagoModule} from 'ngx-timeago';
 
 @NgModule({
   declarations: [],
@@ -21,7 +24,10 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     TabsModule.forRoot(), // forRoot() dung cho nhung module thuoc ngx-module ??
     NgxGalleryModule,
     FileUploadModule,
-    BsDatepickerModule.forRoot()
+    BsDatepickerModule.forRoot(),
+    PaginationModule.forRoot(),
+    ButtonsModule.forRoot(),
+    TimeagoModule.forRoot()
   ],
   exports: [              // export module => bên ngoài có thể access các module này
     BsDropdownModule,
@@ -30,7 +36,10 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     TabsModule,
     NgxGalleryModule,
     FileUploadModule,
-    BsDatepickerModule
+    BsDatepickerModule,
+    PaginationModule,
+    ButtonsModule,
+    TimeagoModule
   ]
 })
 export class SharedModule { }

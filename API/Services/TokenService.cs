@@ -25,8 +25,11 @@ namespace API.Services
             //adding claim
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.NameId, user.UserName)
                 //tao 1 truong nameid voi gia tri la username trong token
+                // new Claim(JwtRegisteredClaimNames.NameId, user.UserName)
+
+                new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName)
             };
 
             //create some credentials

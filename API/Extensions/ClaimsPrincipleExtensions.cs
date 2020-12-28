@@ -6,8 +6,14 @@ namespace API.Extensions
     {
         public static string GetUsername(this ClaimsPrincipal user)
         {
-            // lay truong NameId trong token ra, NameId chinh la UserName, theo nhu trong cau hinh token
-            return user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            // ClaimTypes.Name : dai dien cho truong UniqueName trong token
+            // ClaimType.NameIdentifier : dai dien cho truong NameId trong token
+            return user.FindFirst(ClaimTypes.Name)?.Value;
+        }
+
+        public static int GetUserId(this ClaimsPrincipal user)
+        {
+            return int.Parse(user.FindFirst(ClaimTypes.NameIdentifier)?.Value);
         }
     }
 }

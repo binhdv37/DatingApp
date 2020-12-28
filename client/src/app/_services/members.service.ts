@@ -1,9 +1,13 @@
 import { Injectable } from '@angular/core';
 import {environment} from '../../environments/environment';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Member} from '../_models/member';
 import {of} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {map, take} from 'rxjs/operators';
+import {PaginatedResult} from '../_models/pagination';
+import {UserParams} from '../_models/userParams';
+import {AcountService} from './acount.service';
+import {User} from '../_models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -12,28 +16,101 @@ export class MembersService {
 
   baseUrl = environment.apiUrl;
   members: Member[] = [];
+  memberCache = new Map();
+  user: User;
+  userParams: UserParams;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private accountService: AcountService) {
+    this.accountService.currentUser$.pipe(take(1)).subscribe(user => {
+      this.user = user;
+      this.userParams = new UserParams(user); // khởi tạo giá trị userparams khi lần đầu component dc gọi (page=1, pageSize=5)
+    });
+  }
 
-  getMembers() {
-    if (this.members.length > 0) { return of(this.members); } // return members property as observable
-    return this.http.get<Member[]>(this.baseUrl + 'users').pipe(
-      map (members => {
-        this.members = members;
-        return members;
+  getUserParams(){
+    return this.userParams;
+  }
+
+  setUserParams(params: UserParams){
+    this.userParams = params;
+  }
+
+  resetUserParams(){
+    this.userParams = new UserParams(this.user);
+    return this.userParams;
+  }
+
+  // getMembers() {
+  //   if (this.members.length > 0) { return of(this.members); } // return members property as observable
+  //   return this.http.get<Member[]>(this.baseUrl + 'users').pipe(
+  //     map (members => {
+  //       this.members = members;
+  //       return members;
+  //     })
+  //   );
+  // }
+
+  // trả về Observale<PaginatedResult<Member[]>>
+  getMembers(userParams: UserParams){
+    // tim trong cache xem co data k
+    const response = this.memberCache.get(Object.values(userParams).join('-'));
+    if (response){
+      return of(response); // return response as observable
+    }
+
+    let params = this.getPaginationHeaders(userParams.pageNumber, userParams.pageSize);
+
+    params = params.append('minAge', userParams.minAge.toString());
+    params = params.append('maxAge', userParams.maxAge.toString());
+    params = params.append('gender', userParams.gender.toString());
+    params = params.append('orderBy', userParams.orderBy.toString());
+
+    return this.getPaginatedResult<Member[]>(this.baseUrl + 'users', params).pipe(
+      // tslint:disable-next-line:no-shadowed-variable
+      map(response => {
+        this.memberCache.set(Object.values(userParams).join('-'), response);
+        return response;
+      })
+    );
+
+}
+
+// get request, expect trả về T (vd : như ở đây là Member[])
+  // map cái kết quả => PaginatedResult<T> ( PaginatedResult<Member[]> )
+  private getPaginatedResult<T>(url, params) {
+    const paginatedResult: PaginatedResult<T> = new PaginatedResult<T>();
+    // observe: 'response' : => hàm get bên dưới tra về full response thay vì chỉ body như thông thường.
+    // dễ dàng truy cập body và header như bên dưới, map các giá trị như bên dưới.
+    return this.http.get<T>(url, {observe: 'response', params}).pipe(
+      map(response => {
+        paginatedResult.result = response.body;
+        if (response.headers.get('Pagination') !== null) {
+          paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
+        }
+        return paginatedResult;
       })
     );
   }
 
+  private getPaginationHeaders(pageNumber: number, pageSize: number){
+    let params = new HttpParams();
+
+    params = params.append('pageNumber', pageNumber.toString());
+    params = params.append('pageSize', pageSize.toString());
+
+    return params;
+  }
   getMember(username: string){
-    const member = this.members.find(
-      x => {
-        // tslint:disable-next-line:no-unused-expression
-        return x.userName === username;
-      }
-    );
-    console.log('member : ' + member); // why this member always is undefined
-    if (member !== undefined) { return of(member); }
+    // [...this.memberCache.values()] : 1 array of array.
+    console.log([...this.memberCache.values()]);
+    const member = [...this.memberCache.values()]
+      .reduce((arr, elem) => arr.concat(elem.result), [])
+      .find((member: Member) => member.userName === username);
+
+    if (member){
+      return of(member);
+    }
+
     return this.http.get<Member>(this.baseUrl + 'users/' + username);
   }
 

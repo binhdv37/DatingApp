@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.DTOs;
 using API.Entities;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -51,11 +53,36 @@ namespace API.Data
                 .SingleOrDefaultAsync(x => x.UserName == username);
         }
 
-        public async Task<IEnumerable<MemberDto>> GetMembersAsync()
+        public async Task<PagedList<MemberDto>> GetMembersAsync(UserParams userParams)
         {
-            return await _context.Users
-                .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)//map userDto thanh memberdto, load config tu file autoMapperProfile
-                .ToListAsync();
+            // // thêm các điều kiện vào dưới đây.
+            // var query = _context.Users
+            //     .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
+            //     .AsNoTracking(); // vi ta dang truy van data, nen k can entity tracking thay doi j ca
+            //     // .AsQueryable();
+
+                // return await PagedList<MemberDto>.CreateAsync(query,
+                // userParams.PageNumber, userParams.PageSize);
+
+                var query = _context.Users.AsQueryable();
+                query = query.Where(u => u.UserName != userParams.CurrentUsername); // lay cac user khac user hien tai
+                query = query.Where(u => u.Gender == userParams.Gender); // lay cac user co gender theo param
+
+                var minDob = DateTime.Today.AddYears(-userParams.MaxAge - 1);
+                var maxDob = DateTime.Today.AddYears(-userParams.MinAge);
+
+                query = query.Where(u => u.DateOfBirth >= minDob && u.DateOfBirth <= maxDob);
+
+                // tuong duong switch(userParams.OrderBy) ..., clean hon, k can su dung break
+                query = userParams.OrderBy switch
+                {
+                    "created" => query.OrderByDescending(u => u.Created),
+                    _ => query.OrderByDescending(u => u.LastActive) // _ la truong hop default
+                };
+
+                return await PagedList<MemberDto>.CreateAsync(query.ProjectTo<MemberDto>(_mapper
+                        .ConfigurationProvider).AsNoTracking(),
+                    userParams.PageNumber, userParams.PageSize);
         }
 
         public async Task<MemberDto> GetMemberAsync(string username)

@@ -7,6 +7,7 @@ using API.Data;
 using API.DTOs;
 using API.Entities;
 using API.Extensions;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -31,13 +32,26 @@ namespace API.Controllers
         }
 
         [HttpGet] // get all members
-        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
+        //cái userParams bên dưới :
+        // là object .net tự tạo, với các giá trị ban mặc định, sau đó set các properties với giá trị
+        // trong request param.
+        // nếu param k có gtri => các giá trị mặc định như trong class UserParams sẽ đc sd
+        // vd : k có query => mặc định userParams.PageNumber = 1, userParams.PageSize = 10
+        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery]UserParams userParams) // formquery : => userParam lay tu query string
         {
-            // var users = await _userRepository.GetUsersAsync();
-            // var usersToReturn = _mapper.Map<IEnumerable<MemberDto>>(users); : map users to IEnumerable<MemberDto>
-            // return Ok(users);
+            var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
+            userParams.CurrentUsername = user.UserName;// gán curentUserName cho userParam object = username trong token lấy ra
 
-            var users = await _userRepository.GetMembersAsync();
+            if (string.IsNullOrEmpty(userParams.Gender)) // k cung cap gender trong param
+            {
+                userParams.Gender = user.Gender == "male" ? "female" : "male";
+            }
+
+            var users = await _userRepository.GetMembersAsync(userParams);
+
+            Response.AddPaginationHeader(users.CurrentPage, users.PageSize,
+                users.TotalCount, users.TotalPages);
+
             return Ok(users);
         }
 

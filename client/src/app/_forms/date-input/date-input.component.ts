@@ -18,7 +18,7 @@ export class DateInputComponent implements ControlValueAccessor {
     this.bsConfig = {
       containerClass: 'theme-red',
       dateInputFormat: 'DD MMMM YYYY'
-    }
+    };
   }
 
   registerOnChange(fn: any): void {
