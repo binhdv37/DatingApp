@@ -44,9 +44,9 @@ namespace API.Controllers
                 LikedUserId = likedUser.Id
             };
 
-            sourceUser.LikedUsers.Add(userLike);
+            sourceUser.LikedUsers.Add(userLike); //add likedUser to list
 
-            if (await _userRepository.SaveAllAsync()) return Ok();
+            if (await _userRepository.SaveAllAsync()) return Ok(); // update to db
 
             return BadRequest("Failed to like user");
         }
