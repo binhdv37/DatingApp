@@ -31,6 +31,7 @@ namespace API.Controllers
             _photoService = photoService;
         }
 
+
         [HttpGet] // get all members
         //cái userParams bên dưới :
         // là object .net tự tạo, với các giá trị ban mặc định, sau đó set các properties với giá trị
@@ -54,6 +55,7 @@ namespace API.Controllers
 
             return Ok(users);
         }
+
 
         //api/users/{username}
         [HttpGet("{username}", Name = "GetUser")] //get member with username
